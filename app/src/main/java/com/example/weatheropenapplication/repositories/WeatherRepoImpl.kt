@@ -9,7 +9,7 @@ import com.example.weatheropenapplication.network.Api
 import retrofit2.Response
 import java.lang.Exception
 
-class WeatherRepoImpl(private val api: Api) : WeatherRepo {
+class WeatherRepoImpl(private val api: Api):WeatherRepo {
     override suspend fun searchLocation(query: String): BaseModel<List<Location>> {
         return request {
             api.searchLocation(query = query)
@@ -27,20 +27,17 @@ class WeatherRepoImpl(private val api: Api) : WeatherRepo {
             api.getHourlyForecasts(locationKey = locationKey)
         }
     }
-
-
-    suspend fun <T> request(request: suspend () -> Response<T>): BaseModel<T> {
-        try {
-            request().also {
-                return if (it.isSuccessful) {
-
-                    BaseModel.Success(it.body()!!)
-                } else {
-                    BaseModel.Error(it.errorBody()?.string().toString())
-                }
+}
+suspend fun<T> request(request: suspend ()->Response<T>):BaseModel<T>{
+    try {
+        request().also {
+            return if (it.isSuccessful){
+                BaseModel.Success(it.body()!!)
+            }else{
+                BaseModel.Error(it.errorBody()?.string().toString())
             }
-        } catch (e: Exception) {
-            return BaseModel.Error(e.message.toString())
         }
+    }catch (e:Exception){
+        return BaseModel.Error(e.message.toString())
     }
 }

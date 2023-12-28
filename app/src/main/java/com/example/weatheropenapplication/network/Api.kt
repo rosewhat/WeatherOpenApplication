@@ -11,9 +11,9 @@ import retrofit2.http.Query
 const val APIKEY = "LbdxCABRYFDaJfmxL1Lo9Jc6i6hjqhff"
 
 interface Api {
-    @GET("location/v1/cities/search")
+    @GET("locations/v1/cities/search")
     suspend fun searchLocation(
-        @Query("apiKey") apiKey: String = APIKEY,
+        @Query("apikey") apiKey: String = APIKEY,
         @Query("q") query: String
     ): Response<List<Location>>
 
@@ -29,5 +29,5 @@ interface Api {
         @Path("location_key") locationKey: String,
         @Query("apikey") apiKey: String = APIKEY,
         @Query("metric") metric: Boolean = true
-    ) : Response<List<HourlyForecast>>
+    ):Response<List<HourlyForecast>>
 }

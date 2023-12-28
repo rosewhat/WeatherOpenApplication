@@ -17,11 +17,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,12 +35,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,12 +54,9 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun HomeScreen(
-    navController: NavController,
-    viewModel: HomeViewModel = viewModel()
+    navController: NavController, viewModel: HomeViewModel = viewModel()
 ) {
-
     val locations by viewModel.locations.collectAsState()
-
     val (city, setCity) = remember {
         mutableStateOf("")
     }
@@ -72,8 +75,8 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Weather App",
-            color = Color.Black,
+            text = "Welcome to weather app.",
+            color = Color.White,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold
         )
@@ -86,21 +89,19 @@ fun HomeScreen(
                 .background(MaterialTheme.colorScheme.secondary),
             contentAlignment = Alignment.Center
         ) {
-            TextField(modifier = Modifier.fillMaxWidth(), value = city, onValueChange = {
+            TextField(modifier=Modifier.fillMaxWidth(),value = city, onValueChange = {
                 setCity(it)
             }, colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color.Transparent,
+                containerColor=Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 errorIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
-                textColor = Color.Transparent,
-                placeholderColor = Color.Transparent
+                textColor = Color.White,
+                placeholderColor = Color.Gray
             ), placeholder = {
-                Text(text = "City")
-            }
-            )
-
+                Text("City")
+            })
         }
         Spacer(modifier = Modifier.height(32.dp))
         AnimatedVisibility(
@@ -109,7 +110,7 @@ fun HomeScreen(
             exit = fadeOut() + scaleOut()
         ) {
             Column {
-                Text(text = "Выберите город:", color = Color.Black)
+                Text(text = "Choose your city:", color = Color.White)
                 Spacer(modifier = Modifier.height(8.dp))
                 when (val data = locations) {
                     is BaseModel.Success -> {
@@ -118,7 +119,7 @@ fun HomeScreen(
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            items(data.data) { locations ->
+                            items(data.data) { location ->
                                 Row(modifier = Modifier
                                     .fillMaxWidth()
                                     .height(50.dp)
@@ -127,44 +128,38 @@ fun HomeScreen(
                                     )
                                     .background(MaterialTheme.colorScheme.secondary)
                                     .clickable {
-                                        navController.navigate("weather/${locations.key}/${locations.englishName}/${locations.country.englishName}")
+                                        navController.navigate("weather/${location.key}/${location.englishName}/${location.country.englishName}")
                                     }
                                     .padding(8.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
+                                    verticalAlignment = Alignment.CenterVertically) {
                                     Column {
                                         Text(
-                                            locations.englishName,
+                                            location.englishName,
                                             color = Color.Black,
                                             fontWeight = FontWeight.Bold
                                         )
                                         Text(
-                                            locations.country.englishName,
+                                            location.country.englishName,
                                             color = Color.Black,
-                                            fontWeight = FontWeight.Bold,
                                             fontSize = 12.sp
                                         )
-
                                     }
                                 }
                             }
                         }
                     }
 
-                    else -> {
-
-
-                    }
+                    else -> {}
                 }
             }
-
         }
         AnimatedVisibility(
-            visible = locations is BaseModel.Loading, enter = fadeIn() + scaleIn(),
+            visible = locations is BaseModel.Loading,
+            enter = fadeIn() + scaleIn(),
             exit = fadeOut() + scaleOut()
         ) {
-            CircularProgressIndicator(color = Color.Black)
+            CircularProgressIndicator(color = Color.White)
         }
     }
 }

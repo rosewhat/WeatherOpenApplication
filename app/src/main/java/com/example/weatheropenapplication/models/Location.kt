@@ -4,77 +4,75 @@ import com.google.gson.annotations.SerializedName
 
 data class Location(
     @SerializedName("Version")
-    val version: Int,
+    val version:Int,
     @SerializedName("Key")
-    val key: Int,
+    val key:String,
     @SerializedName("Type")
-    val type: String,
+    val type:String,
     @SerializedName("Rank")
-    val rank: String,
+    val rank:Int,
     @SerializedName("LocalizedName")
-    val localizedName: String,
-    @SerializedName("englishName")
-    val englishName: String,
+    val localizedName:String,
+    @SerializedName("EnglishName")
+    val englishName:String,
     @SerializedName("PrimaryPostalCode")
-    val primaryPostalCode: String,
+    val primaryPostalCode:String,
     @SerializedName("Region")
-    val region: Name,
+    val region:Name,
     @SerializedName("Country")
-    val country: Name,
+    val country:Name,
     @SerializedName("timeZone")
-    val timeZone: String,
+    val timeZone: TimeZone,
     @SerializedName("GeoPosition")
-    val value: Position,
+    val geoPosition: Position,
     @SerializedName("IsAlias")
-    val isAlias: Boolean,
-
+    val isAlias:Boolean
 )
 
 data class Position(
     @SerializedName("Latitude")
-    val latitude: Double,
+    val latitude:Double,
     @SerializedName("Longitude")
-    val longitude: Double,
-    @SerializedName("PrimaryPostalCode")
-    val primaryPostalCode: String,
+    val longitude:Double,
     @SerializedName("Elevation")
     val elevation: Elevation
 )
 data class Elevation(
     @SerializedName("Metric")
-    val metric: Value,
+    val metric:Value,
     @SerializedName("Imperial")
-    val value: Value,
-
+    val imperial:Value
 )
 
 data class Value(
     @SerializedName("Value")
-    val value: Double,
+    val value:Double,
     @SerializedName("Unit")
-    val unit: String,
+    val unit:String,
     @SerializedName("UnitType")
-    val unitType: Int,
+    val unitType:Int
 )
 
-data class Name (
+
+
+data class Name(
     @SerializedName("ID")
-    val id: String,
+    val id:String,
     @SerializedName("LocalizedName")
-    val localizedName: String,
+    val localizedName:String,
     @SerializedName("EnglishName")
-    val englishName: String,
+    val englishName:String
 )
 
 data class TimeZone(
     @SerializedName("Code")
-    val code: String,
+    val code:String,
     @SerializedName("name")
-    val name: String,
+    val name:String,
     @SerializedName("GmtOffset")
-    val gmtOffset: Double,
-    @SerializedName("isDaylightSaving")
-    val isDaylightSaving: Boolean,
+    val gmtOffset:Double,
+    @SerializedName("IsDaylightSaving")
+    val isDaylightSaving:Boolean,
     @SerializedName("NextOffsetChange")
-    val nextOffsetChange: String?,
+    val nextOffsetChange:String?
 )
